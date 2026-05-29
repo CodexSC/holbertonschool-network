@@ -1,4 +1,4 @@
 #!/bin/bash
 # Displays listening ports with PID and program name, matching the example output
 sudo netstat -lntup
-sudo netstat -lx
+sudo netstat -lxp
