@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
-# Script to change localhost and facebook.com IP resolution
-
-HOSTS_FILE="/etc/hosts"
-TMP_FILE="/tmp/hosts.$$"
-
-# Backup the original hosts file
-sudo cp "$HOSTS_FILE" "${HOSTS_FILE}.bak"
-
-# Remove existing localhost and facebook.com entries
-sudo grep -v 'localhost' "$HOSTS_FILE" | sudo grep -v 'facebook.com' > "$TMP_FILE"
-
-# Add new entries
-echo -e "127.0.0.2\tlocalhost" | sudo tee -a "$TMP_FILE" > /dev/null
-echo -e "8.8.8.8\tfacebook.com" | sudo tee -a "$TMP_FILE" > /dev/null
-
-# Move the temp file back to /etc/hosts
-sudo mv "$TMP_FILE" "$HOSTS_FILE"
+# Configures /etc/hosts so localhost resolves to 127.0.0.2
+# and facebook.com resolves to 8.8.8.8
+sed -i 's/127.0.0.1\s*localhost/127.0.0.2 localhost/' /etc/hosts
+echo "8.8.8.8 facebook.com" >> /etc/hosts
