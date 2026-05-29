@@ -2,17 +2,17 @@
 # Script to change localhost and facebook.com IP resolution
 
 HOSTS_FILE="/etc/hosts"
+TMP_FILE="/tmp/hosts.$$"
 
 # Backup the original hosts file
 sudo cp "$HOSTS_FILE" "${HOSTS_FILE}.bak"
 
 # Remove existing localhost and facebook.com entries
-sudo sed -i '/localhost/d' "$HOSTS_FILE"
-sudo sed -i '/facebook.com/d' "$HOSTS_FILE"
+sudo grep -v 'localhost' "$HOSTS_FILE" | sudo grep -v 'facebook.com' > "$TMP_FILE"
 
 # Add new entries
-# localhost -> 127.0.0.2
-# facebook.com -> 8.8.8.8
+echo -e "127.0.0.2\tlocalhost" | sudo tee -a "$TMP_FILE" > /dev/null
+echo -e "8.8.8.8\tfacebook.com" | sudo tee -a "$TMP_FILE" > /dev/null
 
-echo -e "127.0.0.2\tlocalhost" | sudo tee -a "$HOSTS_FILE" > /dev/null
-echo -e "8.8.8.8\tfacebook.com" | sudo tee -a "$HOSTS_FILE" > /dev/null
+# Move the temp file back to /etc/hosts
+sudo mv "$TMP_FILE" "$HOSTS_FILE"
